@@ -1,0 +1,4 @@
+beam-network-sdk[s3,r2]>=0.13.3,<0.14
+httpx>=0.25,<1
+pytest>=8,<10
+ruff>=0.6,<1

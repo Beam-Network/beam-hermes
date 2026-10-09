@@ -1,0 +1,23 @@
+[project]
+name = "beam-hermes"
+version = "0.1.0"
+description = "Beam (b1m.ai) plugin for Hermes Agent: transfers, fan-out and Rooms as native tools"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "beam-network-sdk[s3,r2]>=0.13.3,<0.14",
+    "httpx>=0.25,<1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-p no:cacheprovider --confcutdir=tests"
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "BLE", "SIM"]
+ignore = ["E501"]

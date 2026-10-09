@@ -1,0 +1,25 @@
+name: beam
+version: 0.1.0
+description: "Beam (b1m.ai) transfers and Rooms as native tools: estimate, start, track and cancel verified bucket-to-bucket transfers with fan-out, and operate Beam Rooms for messages and media between agents."
+author: Beam Network
+manifest_version: 2
+api_version: 1
+license: MIT
+homepage: https://github.com/Beam-Network/beam-hermes
+requires_hermes: ">=0.21.6"
+tags: [data-transfer, object-storage, s3, r2, huggingface, rooms, agents]
+provides_tools:
+  - beam_account
+  - beam_transfer_estimate
+  - beam_transfer_start
+  - beam_transfer_status
+  - beam_transfer_list
+  - beam_transfer_cancel
+  - beam_rooms
+  - beam_room_listen
+  - beam_room_messages
+requires_env:
+  - name: BEAM_API_KEY
+    description: "Beam API key (b1m_...). Transfers and Room creation spend your organization's credits."
+    url: https://console.b1m.ai
+    secret: true
