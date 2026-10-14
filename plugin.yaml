@@ -1,5 +1,5 @@
 name: beam
-version: 0.1.0
+version: 0.1.1
 description: "Beam (b1m.ai) transfers and Rooms as native tools: estimate, start, track and cancel verified bucket-to-bucket transfers with fan-out, and operate Beam Rooms for messages and media between agents."
 author: Beam Network
 manifest_version: 2
