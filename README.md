@@ -1,12 +1,31 @@
-# beam-hermes
+# Beam — Programmable Data Movement for Hermes Agent
 
-Beam (b1m.ai) plugin for [Hermes Agent](https://github.com/NousResearch/hermes-agent):
-verified bucket-to-bucket transfers, fan-out to several destinations, and Beam
-Rooms as native Hermes tools.
+Connect [Hermes Agent](https://github.com/NousResearch/hermes-agent) to Beam Network
+(Bittensor SN105), a decentralized, programmable bandwidth network that enables AI
+agents to move, stream, and exchange data across cloud storage, enterprise
+applications, and distributed infrastructure.
 
-Beam coordinates data movement. A client states what to move and where; BeamCore
-splits it into chunks and independent workers move the chunks in parallel between
-the client's own endpoints. Documentation: https://docs.b1m.ai
+The Beam plugin allows Hermes agents to interact with Beam directly, enabling
+automated data transfers, transfer monitoring, and secure collaboration through
+Beam Rooms.
+
+## Key capabilities
+
+- **Cross-platform data movement:** Transfer data between supported cloud storage
+  platforms and infrastructure: Amazon S3, Cloudflare R2, S3-compatible stores,
+  Hippius and Hugging Face.
+- **Autonomous transfers:** Estimate, initiate, monitor, and manage data transfers
+  through agent workflows.
+- **Beam Rooms:** Enable secure, end-to-end encrypted communication and data
+  exchange between agents, applications, and connected systems.
+- **Real-time collaboration:** Exchange messages, files, and media through shared
+  Rooms.
+- **Programmable workflows:** Integrate data movement into automated, multi-agent
+  operations without manually managing infrastructure.
+
+**Agents need data. Beam moves it.**
+
+Documentation: https://docs.b1m.ai
 
 ## Tools
 
@@ -41,7 +60,7 @@ when Beam fits, confirming costs, credentials, Rooms and error handling.
 ## Install
 
 ```bash
-hermes plugins install Beam-Network/beam-hermes
+hermes plugins install beam
 hermes plugins enable beam
 hermes config set BEAM_API_KEY b1m_...
 ```
@@ -89,11 +108,15 @@ are appended as JSON lines to a file under the plugin's data directory, which
   connection to Beam's transfer gateway while a transfer runs; metadata reads
   (object size) from the storage providers named in the URIs. Storage keys never
   leave the machine: the SDK signs short-lived, chunk-scoped routes locally.
+- **Your data.** Independent third-party Beam workers move the bytes and can
+  read them, so encrypt confidential data first. A transfer overwrites existing
+  objects at its destination keys.
 - **Processes.** A detached Python worker per transfer, running until the
-  transfer ends. A detached `beam ... listen` process per Room listener, running
-  until stopped with `beam_room_listen`. Short-lived `beam --json ...` commands for
-  Room actions and `ps` to confirm a process is still the one the plugin started
-  before reporting on or stopping it.
+  transfer ends or times out (6 hours by default, 7 days at most), even after the
+  Hermes session that started it has ended. A detached `beam ... listen` process
+  per Room listener, running until stopped with `beam_room_listen`. Short-lived
+  `beam --json ...` commands for Room actions and `ps` to confirm a process is
+  still the one the plugin started before reporting on or stopping it.
 - **Files.** Everything is written under Hermes's per-plugin data directory
   (`<hermes home>/plugin-data/beam/`), owner-only: transfer job records and event
   logs, listener message logs, Room invitation tokens (`invite`), and the WHIP
@@ -104,8 +127,10 @@ are appended as JSON lines to a file under the plugin's data directory, which
   uses this machine's Beam agent enrollment. `agent_connect` enrolls the machine
   with `BEAM_API_KEY`.
 - **Spending.** `beam_transfer_start` and `beam_rooms` `create` spend
-  organization credits and refuse to run without `confirmed: true`.
-- No telemetry, no self-updates.
+  organization credits and refuse to run without `confirmed: true`, which the
+  agent passes after asking you; Hermes itself does not prompt.
+- **Reporting.** The Beam SDK reports transfer performance timings to Beam. The
+  plugin never updates itself.
 
 ## Development
 
